@@ -16,7 +16,7 @@ const app = express();
 const allowedOrigin =
   process.env.NODE_ENV === "development"
     ? "http://localhost:3000"
-    : "https://arbol-app.herokuapp.com";
+    : "https://arbol-express.herokuapp.com";
 app.use(
   cors({
     origin: allowedOrigin,

@@ -1,6 +1,6 @@
 const API_URL =
   process.env.NODE_ENV === "production"
-    ? "https://arbol-app.herokuapp.com/api/v1"
+    ? "https://arbol-express.herokuapp.com/api/v1"
     : "http://localhost:5000/api/v1";
 
 export default function fetchApi(route, options) {
