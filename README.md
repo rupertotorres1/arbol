@@ -1,4 +1,4 @@
-Check it out at <https://https://arbol-app.herokuapp.com/>
+Check it out at <https://arbol-app.herokuapp.com/>
 
 How to run locally:
 
