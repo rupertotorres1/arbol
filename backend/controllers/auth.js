@@ -12,7 +12,7 @@ const register = async (req, res, next) => {
   passport.authenticate("local", function(err, user, info) {
     if (err) return next(err);
     if (!user) return res.sendStatus(404);
-    req.login(user, (err) => (err ? next(err) : res.sendStatus(200)));
+    req.login(user, (err) => (err ? next(err) : res.sendStatus(201)));
   })(req, res, next);
 };
 
@@ -20,7 +20,7 @@ const login = async (req, res, next) => {
   passport.authenticate("local", function(err, user, info) {
     if (err) return next(err);
     if (!user) return res.sendStatus(404);
-    req.login(user, (err) => (err ? next(err) : res.sendStatus(200)));
+    return req.login(user, (err) => (err ? next(err) : res.sendStatus(200)));
   })(req, res, next);
 };
 
