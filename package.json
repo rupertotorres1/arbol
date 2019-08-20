@@ -1,0 +1,20 @@
+{
+  "name": "arbol",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "heroku-postbuild": "cd backend && npm install && cd .. && npm run build",
+    "build": "cd frontend && npm install && npm run build",
+    "backend": "cd backend && npm start",
+    "dev": "concurrently — kill-others \"npm run backend-dev\" \"npm run frontend-dev\"",
+    "backend-dev": "cd backend && npm run dev",
+    "frontend-dev": "cd frontend && npm start"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^4.1.0"
+  },
+  "engines": {
+    "node": "12.6.0"
+  }
+}
