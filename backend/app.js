@@ -13,20 +13,24 @@ const router = require("./routes");
 const app = express();
 
 // CORS
-const whitelist =
+// const whitelist =
+//   process.env.NODE_ENV === "development"
+//     ? ["http://localhost:3000"]
+//     : ["http://arbol-app.herokuapp.com", "https://arbol-app.herokuapp.com"];
+// const checkOrigin = (origin, callback) => {
+//   if (whitelist.includes(origin)) {
+//     callback(null, true);
+//   } else {
+//     callback(new Error("Not allowed by CORS"));
+//   }
+// };
+const allowedOrigin =
   process.env.NODE_ENV === "development"
-    ? ["http://localhost:3000"]
-    : ["http://arbol-app.herokuapp.com", "https://arbol-app.herokuapp.com"];
-const checkOrigin = (origin, callback) => {
-  if (whitelist.includes(origin)) {
-    callback(null, true);
-  } else {
-    callback(new Error("Not allowed by CORS"));
-  }
-};
+    ? "http://localhost:3000"
+    : "https://arbol-app.herokuapp.com";
 app.use(
   cors({
-    origin: checkOrigin,
+    origin: allowedOrigin,
     credentials: true
   })
 );
