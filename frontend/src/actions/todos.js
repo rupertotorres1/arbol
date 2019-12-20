@@ -7,6 +7,7 @@ export const UPDATE_TODO = "UPDATE_TODO";
 export const DELETE_TODO = "DELETE_TODO";
 export const LOADED_TODOS = "LOADED_TODOS";
 export const FETCH_TODOS = "FETCH_TODOS";
+export const CHANGE_CURRENT_GOAL_ID = "CHANGE_CURRENT_GOAL_ID";
 
 // action creators
 export function addTodo(todo) {
@@ -39,4 +40,8 @@ export function loadedTodos(todos) {
 
 export function fetchTodos() {
   return { type: FETCH_TODOS };
+}
+
+export function changeCurrentGoalId(newId) {
+  return { type: CHANGE_CURRENT_GOAL_ID, newId };
 }

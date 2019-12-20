@@ -6,7 +6,8 @@ import {
   UPDATE_TODO,
   DELETE_TODO,
   LOADED_TODOS,
-  FETCH_TODOS
+  FETCH_TODOS,
+  CHANGE_CURRENT_GOAL_ID
 } from "../actions/todos";
 
 export const TODOS_DEFAULT_STATE = {
@@ -14,7 +15,8 @@ export const TODOS_DEFAULT_STATE = {
   saving: false,
   error: "",
   items: {},
-  newTodoId: null
+  newTodoId: null,
+  currentGoalId: null
 };
 
 export default function todos(state = TODOS_DEFAULT_STATE, action) {
@@ -80,9 +82,10 @@ export default function todos(state = TODOS_DEFAULT_STATE, action) {
       };
     }
 
-    case TODOS_FAILURE:
+    case TODOS_FAILURE: {
       console.log("todos error", action.error);
       return { ...state, loading: false, saving: false, error: action.error };
+    }
 
     case UPDATE_TODO:
       return {
@@ -117,6 +120,10 @@ export default function todos(state = TODOS_DEFAULT_STATE, action) {
       const newTodos = { ...rest, [parentId]: updatedParent };
 
       return { ...state, items: newTodos };
+    }
+
+    case CHANGE_CURRENT_GOAL_ID: {
+      return { ...state, currentGoalId: action.newId };
     }
 
     default:
