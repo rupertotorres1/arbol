@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { addTodo, updateTodo, deleteTodo } from "../../actions/todos";
+import {
+  updateTodo,
+  deleteTodo,
+  changeCurrentGoalId
+} from "../../actions/todos";
 
 const Box = styled.div`
   width: 12rem;
@@ -23,19 +27,12 @@ const StyledInput = styled.textarea`
 
 const StyledP = styled.p`
   font-family: Optima, sans-serif;
-  width: 10rem;
-  margin: 0.5rem auto;
+  width: 6rem;
+  margin: 0.5rem 0.4rem;
   font-size: 1rem;
   word-wrap: break-word;
-`;
-
-const AddChildBtn = styled.button`
-  display: block;
-  margin: -8px auto -10px auto;
-  background-color: #000000b0;
-  color: white;
   cursor: pointer;
-  border-radius: 0.3rem;
+  display: inline-block;
 `;
 
 const DeleteTodoBtn = styled.button`
@@ -51,7 +48,6 @@ const DeleteTodoBtn = styled.button`
 
 class TodoNode extends Component {
   state = {
-    isHovering: false,
     isEditing: this.props.isNewTodo
   };
 
@@ -73,19 +69,7 @@ class TodoNode extends Component {
     }
   };
 
-  handleMouseEnter = (event) => {
-    this.setState({
-      isHovering: true
-    });
-  };
-
-  handleMouseLeave = (event) => {
-    this.setState({
-      isHovering: false
-    });
-  };
-
-  handleClickText = (event) => {
+  editGoal = (event) => {
     this.setState(
       {
         isEditing: true
@@ -93,13 +77,9 @@ class TodoNode extends Component {
       () => {
         this.textInput.current.focus();
         this.resizeInput();
+        // TODO: set cursor at the end
       }
     );
-  };
-
-  addTodo = (event) => {
-    const parentId = this.props.id;
-    this.props.addTodo({ text: "", parentId });
   };
 
   updateTodo = (event) => {
@@ -122,64 +102,51 @@ class TodoNode extends Component {
     this.props.deleteTodo(id);
   };
 
+  changeCurrentGoalId = (event) => {
+    this.props.changeCurrentGoalId(this.props.id);
+  };
+
   render() {
-    const { text, childrenIds } = this.props;
-    const { isEditing, isHovering } = this.state;
+    const { text } = this.props;
+    const { isEditing } = this.state;
 
     return (
-      <>
-        <Box
-          onMouseEnter={this.handleMouseEnter}
-          onMouseLeave={this.handleMouseLeave}
-        >
-          {isHovering && (
-            <DeleteTodoBtn title="Delete" onClick={this.deleteTodo}>
-              x
-            </DeleteTodoBtn>
-          )}
-          {isEditing ? (
-            <StyledInput
-              rows="1"
-              defaultValue={text}
-              placeholder="Enter new goal"
-              onBlur={this.updateTodo}
-              onKeyDown={this.saveOnEnter}
-              onChange={this.resizeInput}
-              ref={this.textInput}
-            />
-          ) : (
-            <StyledP onClick={this.handleClickText}> {text}</StyledP>
-          )}
-          {isHovering && (
-            <AddChildBtn title="Add subgoal" onClick={this.addTodo}>
-              {" "}
-              +{" "}
-            </AddChildBtn>
-          )}
-        </Box>
-        <ul style={{ listStyle: "none" }}>
-          {childrenIds.map((childId) => (
-            <li key={childId}>
-              <ConnectedTodoNode id={childId} />
-            </li>
-          ))}
-        </ul>
-      </>
+      <Box
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
+      >
+        {!isEditing && <button>C</button>}
+        {isEditing ? (
+          <StyledInput
+            rows="1"
+            defaultValue={text}
+            placeholder="Enter new goal"
+            onBlur={this.updateTodo}
+            onKeyDown={this.saveOnEnter}
+            onChange={this.resizeInput}
+            ref={this.textInput}
+          />
+        ) : (
+          <StyledP onClick={this.changeCurrentGoalId}> {text}</StyledP>
+        )}
+        {!isEditing && <button onClick={this.editGoal}>E</button>}
+        {!isEditing && <button onClick={this.deleteTodo}>D</button>}
+      </Box>
     );
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    ...state.todos.items[ownProps.id],
+    text: state.todos.items[ownProps.id].text,
     isNewTodo: ownProps.id == state.todos.newTodoId
   };
 };
 
 const mapDispatchToProps = {
-  addTodo,
   updateTodo,
-  deleteTodo
+  deleteTodo,
+  changeCurrentGoalId
 };
 
 const ConnectedTodoNode = connect(

@@ -2,17 +2,15 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import TodoTree from "./TodoTree";
+import Goals from "./Goals";
 import NavBar from "../navbar/NavBar";
-
-const StyledH1 = styled.h1`
-  font-size: 2.5rem;
-  font-weight: normal;
-  font-family: Optima, sans-serif;
-  text-align: center;
-`;
+import { fetchTodos } from "../../actions/todos";
 
 class Dashboard extends Component {
+  componentDidMount() {
+    this.props.fetchTodos();
+  }
+
   render() {
     if (!this.props.loggedIn) {
       return <Redirect to="/login" />;
@@ -21,8 +19,7 @@ class Dashboard extends Component {
     return (
       <>
         <NavBar />
-        <StyledH1>Goals</StyledH1>
-        <TodoTree />
+        <Goals />
       </>
     );
   }
@@ -34,4 +31,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Dashboard);
+const mapDispatchToProps = {
+  fetchTodos
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
