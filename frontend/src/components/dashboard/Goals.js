@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { fetchTodos, addTodo } from "../../actions/todos";
+import { ArrowUpward } from "@material-ui/icons";
+import { fetchTodos, addTodo, changeCurrentGoalId } from "../../actions/todos";
 import Goal from "./Goal";
 
 const StyledH1 = styled.h1`
@@ -21,7 +22,7 @@ const NewGoalButton = styled.button`
   font-weight: normal;
   font-family: Optima, sans-serif;
   margin: 1em auto;
-  width: 12rem;
+  width: 10rem;
   box-sizing: border-box;
   display: block;
   background-color: black;
@@ -33,14 +34,26 @@ const NewGoalButton = styled.button`
 
 class Goals extends Component {
   addGoal = (event) => {
-    this.props.addTodo({ text: "", parentId: this.props.currentGoalId });
+    this.props.addTodo({ text: "", parentId: this.props.goalId });
+  };
+
+  goToParent = (event) => {
+    this.props.changeCurrentGoalId(this.props.parentId);
   };
 
   render() {
     const { childrenIds } = this.props;
     return (
       <>
-        <StyledH1>{this.props.currentGoalText}</StyledH1>
+        <StyledH1>
+          {this.props.goalId && (
+            <ArrowUpward
+              onClick={this.goToParent}
+              style={{ marginRight: "1rem", cursor: "pointer" }}
+            ></ArrowUpward>
+          )}
+          {this.props.text}
+        </StyledH1>
         <GoalsContainer>
           <ul style={{ listStyle: "none" }}>
             {childrenIds.map((id) => (
@@ -57,11 +70,14 @@ class Goals extends Component {
 }
 
 const mapStateToProps = (state) => {
+  // TODO: this might not be the best way
+
   const todos = state.todos.items;
   const { currentGoalId } = state.todos;
   return {
-    currentGoalText: currentGoalId ? todos[currentGoalId].text : "Goals",
-    currentGoalId: currentGoalId,
+    goalId: currentGoalId,
+    text: currentGoalId ? todos[currentGoalId].text : "Goals",
+    parentId: currentGoalId ? todos[currentGoalId].parentId : null,
     childrenIds: currentGoalId
       ? todos[currentGoalId].childrenIds
       : Object.keys(todos).filter((id) => !todos[id].parentId)
@@ -70,7 +86,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   fetchTodos,
-  addTodo
+  addTodo,
+  changeCurrentGoalId
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Goals);
