@@ -58,7 +58,7 @@ export default function todos(state = TODOS_DEFAULT_STATE, action) {
           ...prevItems,
           [parentId]: {
             ...prevItems[parentId],
-            childrenIds: [newTodo.id, ...prevItems[parentId].childrenIds]
+            childrenIds: [...prevItems[parentId].childrenIds, newTodo.id]
           },
           [newTodo.id]: { ...newTodo, childrenIds: [] }
         },

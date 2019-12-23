@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
+import { Check, Delete, Edit } from "@material-ui/icons";
 import {
   updateTodo,
   deleteTodo,
@@ -8,7 +9,7 @@ import {
 } from "../../actions/todos";
 
 const Box = styled.div`
-  width: 12rem;
+  width: 17.5rem;
   margin-top: 0.7rem;
   border: 1px solid black;
   border-radius: 0.5rem;
@@ -17,7 +18,7 @@ const Box = styled.div`
 
 const StyledInput = styled.textarea`
   font-family: Optima, sans-serif;
-  width: 10rem;
+  width: 16rem;
   margin: 0.5rem auto;
   display: block;
   font-size: 1rem;
@@ -27,22 +28,23 @@ const StyledInput = styled.textarea`
 
 const StyledP = styled.p`
   font-family: Optima, sans-serif;
-  width: 6rem;
-  margin: 0.5rem 0.4rem;
+  width: 13.5rem;
+  margin: 0.5rem 0.3rem;
   font-size: 1rem;
   word-wrap: break-word;
   cursor: pointer;
   display: inline-block;
 `;
 
-const DeleteTodoBtn = styled.button`
-  margin-left: -10px;
-  border-radius: 10px;
-  margin-top: -10px;
-  display: block;
-  margin-bottom: -8px;
-  background-color: #000000b0;
-  color: white;
+const DeleteBtn = styled(Delete)`
+  cursor: pointer;
+`;
+
+const EditBtn = styled(Edit)`
+  cursor: pointer;
+`;
+
+const DoneBtn = styled(Check)`
   cursor: pointer;
 `;
 
@@ -102,7 +104,7 @@ class TodoNode extends Component {
     this.props.deleteTodo(id);
   };
 
-  changeCurrentGoalId = (event) => {
+  goToGoal = (event) => {
     this.props.changeCurrentGoalId(this.props.id);
   };
 
@@ -115,7 +117,7 @@ class TodoNode extends Component {
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
       >
-        {!isEditing && <button>C</button>}
+        {/* {!isEditing && <DoneBtn></DoneBtn>} */}
         {isEditing ? (
           <StyledInput
             rows="1"
@@ -127,10 +129,10 @@ class TodoNode extends Component {
             ref={this.textInput}
           />
         ) : (
-          <StyledP onClick={this.changeCurrentGoalId}> {text}</StyledP>
+          <StyledP onClick={this.goToGoal}> {text}</StyledP>
         )}
-        {!isEditing && <button onClick={this.editGoal}>E</button>}
-        {!isEditing && <button onClick={this.deleteTodo}>D</button>}
+        {!isEditing && <EditBtn onClick={this.editGoal}></EditBtn>}
+        {!isEditing && <DeleteBtn onClick={this.deleteTodo}></DeleteBtn>}
       </Box>
     );
   }
