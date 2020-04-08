@@ -7,7 +7,7 @@ import {
   DELETE_TODO,
   LOADED_TODOS,
   FETCH_TODOS,
-  CHANGE_CURRENT_GOAL_ID
+  CHANGE_CURRENT_GOAL_ID,
 } from "../actions/todos";
 
 export const TODOS_DEFAULT_STATE = {
@@ -16,7 +16,7 @@ export const TODOS_DEFAULT_STATE = {
   error: "",
   items: {},
   newTodoId: null,
-  currentGoalId: null
+  currentGoalId: null,
 };
 
 export default function todos(state = TODOS_DEFAULT_STATE, action) {
@@ -58,12 +58,12 @@ export default function todos(state = TODOS_DEFAULT_STATE, action) {
           ...prevItems,
           [parentId]: {
             ...prevItems[parentId],
-            childrenIds: [...prevItems[parentId].childrenIds, newTodo.id]
+            childrenIds: [...prevItems[parentId].childrenIds, newTodo.id],
           },
-          [newTodo.id]: { ...newTodo, childrenIds: [] }
+          [newTodo.id]: { ...newTodo, childrenIds: [] },
         },
         saving: false,
-        newTodoId: newTodo.id
+        newTodoId: newTodo.id,
       };
     }
 
@@ -75,10 +75,10 @@ export default function todos(state = TODOS_DEFAULT_STATE, action) {
         ...state,
         items: {
           ...state.items,
-          [newTodo.id]: { ...newTodo, childrenIds: [] }
+          [newTodo.id]: { ...newTodo, childrenIds: [] },
         },
         saving: false,
-        newTodoId: newTodo.id
+        newTodoId: newTodo.id,
       };
     }
 
@@ -94,9 +94,10 @@ export default function todos(state = TODOS_DEFAULT_STATE, action) {
           ...state.items,
           [action.id]: {
             ...state.items[action.id],
-            text: action.newText
-          }
-        }
+            text: action.newText,
+          },
+        },
+        newTodoId: null, // hacky
       };
 
     case DELETE_TODO: {
@@ -114,7 +115,7 @@ export default function todos(state = TODOS_DEFAULT_STATE, action) {
         ...parent,
         childrenIds: parent.childrenIds.filter(
           (childId) => childId !== action.id
-        )
+        ),
       };
 
       const newTodos = { ...rest, [parentId]: updatedParent };

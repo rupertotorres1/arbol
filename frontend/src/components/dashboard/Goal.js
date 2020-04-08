@@ -113,10 +113,7 @@ class TodoNode extends Component {
     const { isEditing } = this.state;
 
     return (
-      <Box
-        onMouseEnter={this.handleMouseEnter}
-        onMouseLeave={this.handleMouseLeave}
-      >
+      <Box>
         {/* {!isEditing && <DoneBtn></DoneBtn>} */}
         {isEditing ? (
           <StyledInput
