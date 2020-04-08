@@ -5,7 +5,7 @@ import { Check, Delete, Edit } from "@material-ui/icons";
 import {
   updateTodo,
   deleteTodo,
-  changeCurrentGoalId
+  changeCurrentGoalId,
 } from "../../actions/todos";
 
 const Box = styled.div`
@@ -50,7 +50,7 @@ const DoneBtn = styled(Check)`
 
 class TodoNode extends Component {
   state = {
-    isEditing: this.props.isNewTodo
+    isEditing: this.props.isNewTodo,
   };
 
   textInput = React.createRef();
@@ -74,12 +74,12 @@ class TodoNode extends Component {
   editGoal = (event) => {
     this.setState(
       {
-        isEditing: true
+        isEditing: true,
       },
       () => {
         this.textInput.current.focus();
         this.resizeInput();
-        // TODO: set cursor at the end
+        this.textInput.current.selectionStart = this.textInput.current.value.length;
       }
     );
   };
@@ -88,7 +88,7 @@ class TodoNode extends Component {
     const { id } = this.props;
 
     this.setState({
-      isEditing: false
+      isEditing: false,
     });
 
     const newText = event.target.value;
@@ -141,14 +141,14 @@ class TodoNode extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     text: state.todos.items[ownProps.id].text,
-    isNewTodo: ownProps.id == state.todos.newTodoId
+    isNewTodo: ownProps.id == state.todos.newTodoId,
   };
 };
 
 const mapDispatchToProps = {
   updateTodo,
   deleteTodo,
-  changeCurrentGoalId
+  changeCurrentGoalId,
 };
 
 const ConnectedTodoNode = connect(
